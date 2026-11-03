@@ -14,11 +14,17 @@ Built with Python 3.12 and aiogram 3 (async). The bot UI is in Ukrainian.
 | `/daily 09:00` | daily digest at 09:00 Kyiv time |
 | `/stop` | cancel the digest |
 
+## Button menu
+`/start` or `/menu` opens an inline menu (edited in place, no chat clutter): rates for
+USD / EUR / PLN / GBP, a step-by-step converter (pick a currency, send the amount) and
+daily-digest time presets. Every submenu has a back button; commands are also registered
+in Telegram's command list.
+
 ## What it shows
 - Async bot with a background scheduler for daily messages (Europe/Kyiv time zone)
 - Public API client with response caching and tolerant parsing (decimal commas)
 - User-input validation with friendly error messages; unexpected errors are logged, not leaked
-- Business logic separated from Telegram code, so it is covered by offline unit tests (12 tests)
+- Business logic separated from Telegram code, so it is covered by offline unit tests (16 tests)
 - Subscriptions in SQLite; a subscriber is never sent the same digest twice in a day,
   and a late subscriber does not get an immediate message for a time that has already passed
 
@@ -37,7 +43,8 @@ pytest
 bot/nbu.py       NBU API client + cache
 bot/logic.py     parsing, conversion, message formatting (pure functions)
 bot/storage.py   SQLite subscriptions
-bot/app.py       aiogram handlers + digest scheduler
+bot/menu.py      inline keyboards and callback-data scheme
+bot/app.py       aiogram handlers (commands, buttons, converter flow) + digest scheduler
 tests/           unit tests
 ```
 
